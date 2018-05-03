@@ -2,13 +2,18 @@
 #include <stdio.h>
 #include <assert.h>
 
-int fit_bits(int x ,int n){
-    return ! (x>>n);
+typedef unsigned packed_t;
+
+int xbyte(packed_t word,int bytenum);
+
+
+int xbyte(packed_t word,int bytenum){
+   return word<< ((3-bytenum) << 3) >> (bytenum << 3);
 }
 
 int main(void){
-    assert(fit_bits(1,1));
-    assert(!fit_bits(2,1));
+    assert(xbyte(0x12345678,3) == 0x12);
+    assert(xbyte(0x12345678,0) == 0x78);
     return 1;
 }
 
